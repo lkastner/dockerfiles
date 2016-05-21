@@ -1,14 +1,12 @@
-# sudo docker run -it \
-#     -v M2_SRC:/home/user/M2 \
-#     -u user \
-#     -w /home/user \
+# docker run -it \
+#     -v polymake_SRC:/home/user/polymake \
 #     --name m2build \
-#     m2env /bin/
+#     build_env/m2 /bin/bash
 
 FROM fedora:23
 MAINTAINER Lars Kastner <lars.kastner@yahoo.dk>
 
-# M2 build context from M2 repo
+# polymake build context
 RUN dnf -y install autoconf bison boost-devel cddlib-devel emacs factory-devel \
    fakeroot flex gc-devel gcc-c++ gdbm-devel git glpk-devel gmp-devel \
    kernel-devel lapack-devel libatomic_ops-devel libfac-devel \
@@ -20,7 +18,7 @@ RUN dnf -y install autoconf bison boost-devel cddlib-devel emacs factory-devel \
 RUN dnf -y install make
 
 RUN useradd -m user
-RUN mkdir /home/user/M2; \
-    chown -R user:user /home/user/M2
+RUN mkdir /home/user/polymake; \
+    chown -R user:user /home/user/polymake
 
 
