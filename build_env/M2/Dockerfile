@@ -22,5 +22,6 @@ RUN dnf -y install make
 RUN useradd -m user
 RUN mkdir /home/user/M2; \
     chown -R user:user /home/user/M2
+VOLUME ["/home/user/M2"]
 
 
