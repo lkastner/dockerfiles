@@ -1,14 +1,12 @@
 # docker run -it \
-#     -v M2_SRC:/home/user/M2 \
-#     -u user \
-#     -w /home/user \
+#     -v polymake_SRC:/home/user/polymake \
 #     --name m2build \
-#     m2env /bin/bash
+#     build_env/m2 /bin/bash
 
 FROM fedora:23
 MAINTAINER Lars Kastner <lars.kastner@yahoo.dk>
 
-# M2 build context from M2 repo
+# polymake build context
 RUN dnf -y install autoconf bison boost-devel cddlib-devel emacs factory-devel \
    fakeroot flex gc-devel gcc-c++ gdbm-devel git glpk-devel gmp-devel \
    kernel-devel lapack-devel libatomic_ops-devel libfac-devel \
@@ -19,16 +17,8 @@ RUN dnf -y install autoconf bison boost-devel cddlib-devel emacs factory-devel \
 # Some standard tools, that are provided by Fedora, but not in the docker version:
 RUN dnf -y install make
 
-# Pass the UID and GID of your user, otherwise you will have permission issues.
-ENV UID 1000
-ENV GID 1000
+RUN useradd -m user
+RUN mkdir /home/user/polymake; \
+    chown -R user:user /home/user/polymake
 
-RUN useradd -m user -u $UID
-RUN mkdir /home/user/M2; \
-    chown -R user:user /home/user/M2
-VOLUME ["/home/user/M2"]
-
-# Set working directory and login user.
-WORKDIR /home/user/M2
-USER user
 
