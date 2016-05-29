@@ -1,7 +1,7 @@
-# sudo docker run -it \
+# docker run -it \
 #     -v M2_SRC:/home/user/M2 \
 #     --name m2build \
-#     m2env /bin/
+#     m2env /bin/bash
 
 FROM fedora:23
 MAINTAINER Lars Kastner <lars.kastner@yahoo.dk>
@@ -12,8 +12,15 @@ RUN dnf -y install autoconf bison boost-devel cddlib-devel emacs factory-devel f
 # Some standard tools, that are provided by Fedora, but not in the docker version:
 RUN dnf -y install make
 
-RUN useradd -m user
+# Pass the UID and GID of your user, otherwise you will have permission issues.
+ENV UID 1000
+ENV GID 1000
+
+RUN useradd -m user -u $UID
 RUN mkdir /home/user/M2; \
     chown -R user:user /home/user/M2
 
+# Set working directory and login user.
+WORKDIR /home/user/M2
+USER user
 
