@@ -11,23 +11,19 @@ RUN apt-get install -yq keyboard-configuration
 RUN mkdir /build
 
 # polymake
-RUN apt-get install -y g++ libboost-dev libgmp-dev libgmpxx4ldbl libmpfr-dev libperl-dev libsvn-perl libterm-readline-gnu-perl libxml-libxml-perl libxml-libxslt-perl libxml-perl libxml-writer-perl libxml2-dev xsltproc clang bliss libbliss-dev make wget bzip2
-
-RUN clang --version
-RUN g++ --version
-RUN gcc --version
-RUN blabla
-
-# Installing polymake
-WORKDIR /build
-ENV POLYMAKE_VERSION 3.0
-ENV POLYMAKE_REVISION r1
-RUN wget http://www.polymake.org/lib/exe/fetch.php/download/polymake-$POLYMAKE_VERSION$POLYMAKE_REVISION.tar.bz2;\
-   tar jxf polymake-$POLYMAKE_VERSION$POLYMAKE_REVISION.tar.bz2
-WORKDIR /build/polymake-$POLYMAKE_VERSION
-RUN ./configure CC=clang CXX=clang++ --without-java --without-javaview;\
-   make -j2;\
-   make install
+# RUN apt-get install -y g++ libboost-dev libgmp-dev libgmpxx4ldbl libmpfr-dev libperl-dev libsvn-perl libterm-readline-gnu-perl libxml-libxml-perl libxml-libxslt-perl libxml-perl libxml-writer-perl libxml2-dev xsltproc clang bliss libbliss-dev make wget bzip2
+# 
+# 
+# # Installing polymake
+# WORKDIR /build
+# ENV POLYMAKE_VERSION 3.0
+# ENV POLYMAKE_REVISION r1
+# RUN wget http://www.polymake.org/lib/exe/fetch.php/download/polymake-$POLYMAKE_VERSION$POLYMAKE_REVISION.tar.bz2;\
+#    tar jxf polymake-$POLYMAKE_VERSION$POLYMAKE_REVISION.tar.bz2
+# WORKDIR /build/polymake-$POLYMAKE_VERSION
+# RUN ./configure CC=clang CXX=clang++ --without-java --without-javaview;\
+#    make -j2;\
+#    make install
 
 
 # M2 stuff
