@@ -20,8 +20,8 @@ RUN dnf -y install autoconf bison boost-devel cddlib-devel emacs factory-devel \
 RUN dnf -y install make
 
 # Pass the UID and GID of your user, otherwise you will have permission issues.
-ENV UID 1001
-ENV GID 1001
+ENV UID 1000
+ENV GID 1000
 
 RUN useradd -m user -u $UID
 RUN mkdir /home/user/M2; \
