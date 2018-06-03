@@ -3,19 +3,25 @@
 #     --name m2build \
 #     m2env /bin/bash
 
-FROM ubuntu:16.04
+FROM oscarsystem/oscardocker:latest
 MAINTAINER Lars Kastner <lars.kastner@yahoo.dk>
 
-RUN apt-get update
-RUN apt-get install -yq keyboard-configuration
-RUN mkdir /build
+USER root
 
-# polymake
-#RUN apt-get install -y g++ libboost-dev libgmp-dev libgmpxx4ldbl libmpfr-dev libperl-dev libsvn-perl libterm-readline-gnu-perl libxml-libxml-perl libxml-libxslt-perl libxml-perl libxml-writer-perl libxml2-dev xsltproc clang bliss libbliss-dev make wget bzip2
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update
+# RUN apt-get install -yq keyboard-configuration
+RUN mkdir /build
 
 
 # M2 stuff
-RUN apt-get install -yq autoconf bison emacs flex g++ gcc gfortran libc6-dev libcdd-dev libatomic-ops-dev libgc-dev libgdbm-dev libglpk-dev liblapack-dev libmpfr-dev libncurses-dev libncurses5-dev libntl-dev libpari-dev libreadline-dev libxml2-dev liblzma-dev libz-dev make openssh-server patch subversion time unzip xbase-clients zlib1g-dev libtool pkg-config libmpc-dev
+RUN apt-get install -yq --no-install-recommends autoconf bison curl \
+fflas-ffpack flex g++ gcc gfortran libatomic-ops-dev libboost-dev libc6-dev \
+libcdd-dev libgc-dev libgdbm-dev libgivaro-dev libglpk-dev libgmp3-dev \
+liblapack-dev liblzma-dev libmpc-dev libmpfr-dev libncurses-dev libncurses5-dev \
+libntl-dev libpari-dev libreadline-dev libtool libxml2-dev libz-dev make \
+patch pinentry-curses pkg-config time unzip yasm zlib1g-dev \
+install-info
 
 # Pass the UID and GID of your user, otherwise you will have permission issues.
 WORKDIR /
@@ -23,33 +29,33 @@ ENV UID 1000
 ENV GID 1000
 ENV NUMPROC 3
 
-RUN useradd -m user -u $UID
-RUN mkdir /home/user/M2; \
-    chown -R user:user /home/user/M2
+# RUN useradd -m user -u $UID
+RUN mkdir /home/oscar/M2; \
+    chown -R oscar:oscar /home/oscar/M2
 
 RUN ln -s /bin/sed /usr/bin/sed
 
 
-# Installing 4ti2
-WORKDIR /build
-ENV FOURTITWO_VERSION 1.6.6
-RUN wget http://www.4ti2.de/version_$FOURTITWO_VERSION/4ti2-$FOURTITWO_VERSION.tar.gz;\
-   tar xzf 4ti2-$FOURTITWO_VERSION.tar.gz
-WORKDIR /build/4ti2-$FOURTITWO_VERSION
-RUN ./configure;\
-   make -j$NUMPROC;\
-   make install
+# # Installing 4ti2
+# WORKDIR /build
+# ENV FOURTITWO_VERSION 1.6.6
+# RUN wget http://www.4ti2.de/version_$FOURTITWO_VERSION/4ti2-$FOURTITWO_VERSION.tar.gz;\
+#    tar xzf 4ti2-$FOURTITWO_VERSION.tar.gz
+# WORKDIR /build/4ti2-$FOURTITWO_VERSION
+# RUN ./configure;\
+#    make -j$NUMPROC;\
+#    make install
 
 
-# Installing topcom
-WORKDIR /build
-ENV TOPCOM_VERSION 0.17.8
-RUN wget http://www.rambau.wm.uni-bayreuth.de/Software/TOPCOM-$TOPCOM_VERSION.tar.gz;\
-   tar xzf TOPCOM-$TOPCOM_VERSION.tar.gz
-WORKDIR /build/topcom-$TOPCOM_VERSION
-RUN ./configure;\
-   make -j$NUMPROC;\
-   make install
+# # Installing topcom
+# WORKDIR /build
+# ENV TOPCOM_VERSION 0.17.8
+# RUN wget http://www.rambau.wm.uni-bayreuth.de/Software/TOPCOM-$TOPCOM_VERSION.tar.gz;\
+#    tar xzf TOPCOM-$TOPCOM_VERSION.tar.gz
+# WORKDIR /build/topcom-$TOPCOM_VERSION
+# RUN ./configure;\
+#    make -j$NUMPROC;\
+#    make install
 
 
 # Installing cohomcalg
@@ -85,5 +91,5 @@ RUN ./configure;\
 
 
 # Set working directory and login user.
-WORKDIR /home/user/M2
-USER user
+WORKDIR /home/oscar/M2
+USER oscar
